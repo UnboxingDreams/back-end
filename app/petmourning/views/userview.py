@@ -6,8 +6,8 @@ import bcrypt
 import jwt
 
 from app.settings import SECRET_KEY
-from .models import User, AnimalSpecies, Death
-from .exception import CustomException
+from ..models import User, AnimalSpecies, Death
+from ..exception import CustomException
 
 
 def completeApply(request):

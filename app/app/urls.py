@@ -22,6 +22,8 @@ from petmourning import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('/api/user', include('app.urls.userurls')),
+    path('/api/home', include('app.urls.homeurls')),
     # path('/api/user', views.signUp),
     # path('login/', views.signIn)
 ]
