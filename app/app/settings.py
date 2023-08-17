@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'petmourning'
 ]
 
 MIDDLEWARE = [
@@ -76,11 +77,16 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME' : 'pet',
+        'USER' : 'root',
+        'PASSWORD' : 'choi0924',
+        'HOST' : 'localhost',
+        'PORT' : '3306',
+        #'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+SECRET_KEY = 'django-insecure-)rg7ge4=*0k0gc4gke(n3e*jv3h0m2y0tz8c9^$0!(bz76a_oh'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
