@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('/api/user', include('app.urls.userurls')),
     path('/api/home', include('app.urls.homeurls')),
+    path('/api/letter', include('app.urls.letter')),
     # path('/api/user', views.signUp),
     # path('login/', views.signIn)
 ]

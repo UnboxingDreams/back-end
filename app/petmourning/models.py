@@ -68,7 +68,7 @@ class Answer(models.Model):
     questionId = models.ForeignKey(Question, on_delete=models.CASCADE)
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
-    contentUrl = models.URLField(blank=True, null=True)
+    contentImgUrl = models.URLField(blank=True, null=True)
     postOut = models.BooleanField(default=False)
     emotion = models.CharField(max_length=10, choices=[(emotion.name, emotion.value) for emotion in Emotion])
     createdAt = models.DateTimeField()
@@ -85,6 +85,13 @@ class Post(models.Model):
     category = models.CharField(max_length=10, choices=[(category.name, category.value) for category in Category])
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
+
+class MailBox(models.Model):
+    id = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=True)
+    emotion = models.CharField(max_length=10, choices=[(emotion.name, emotion.value) for emotion in Emotion])
+    content = models.TextField()
+    contentImgUrl = models.URLField(blank=True, null=True)
+    createdAt = models.DateTimeField()
 
 class PostPicture(models.Model):
     id = models.AutoField(primary_key= True)

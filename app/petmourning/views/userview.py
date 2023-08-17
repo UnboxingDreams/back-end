@@ -10,7 +10,7 @@ from ..models import User, AnimalSpecies, Death
 from ..exception import CustomException
 
 
-def completeApply(request):
+def sendApply(request):
     try:
         if request.method == 'PUT':
             # TODO token에서 userId를 가져와야 함

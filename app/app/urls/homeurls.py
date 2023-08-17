@@ -5,5 +5,5 @@ from petmourning.views.homeview import *
 
 
 urlpatterns = [
-    path('', getHomeDisplay, name = 'getHomeDisplay'),
+    path('', findHomeDisplay, name = 'findHomeDisplay'),
 ]

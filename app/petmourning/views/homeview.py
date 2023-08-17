@@ -10,7 +10,7 @@ from ..models import Answer, User
 from ..exception import CustomException
 
 
-def getHomeDisplay(request):
+def findHomeDisplay(request):
     try:
         if request.method == 'GET':
             # TODO token에서 userId를 가져와야 함
