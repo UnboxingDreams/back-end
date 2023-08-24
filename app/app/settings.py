@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'petmourning',
-    'fcm-django'
+    'fcm-django',
+    'django-crontab'
 ]
 
 MIDDLEWARE = [
@@ -168,3 +169,8 @@ FCM_DJANGO_SETTINGS = {
      # default: False
     "DELETE_INACTIVE_DEVICES": False,
 }
+
+# Crontab
+CRONJOBS = [
+    ("30 21 * * *", "app.cron.sendTodayLetter")
+]
