@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "petmourning",
+  "private_key_id": "5c0553eae90c866292102f614986e3e4794d0eaf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDwDEWaZ3VXkdJ7\nUMDNLyyorRCCwxxS0XAu2Z1sLD1zvrwSC8ojxBHSL/1e2QqkMBglayGv02SG/gKb\n5tO12GNdc06LgIYt6hJ+svF87s83R+75hV3KjLlU9YblQDCYpqWVdEAJS88U3YEe\ng3qnlxHNDTboWHRAZDr2QVUCcle9YqyQfo891OU1EqfqfvthPHSfbwQhmLJb6GG0\nSkKUKR0RoredDtev3d78zq8DGiB1AZPdUdBFSXUTbtSzEsduY77ua7tTugeWUFCo\nAiTDx67Bw21ImQUueQAd6f/xaIxmTMJhOi+ao83QNTxARiRhxDXTXIZyZ/kJJBh2\nrX4+opg3AgMBAAECggEAMefLPKuPqLIHWV3Th5TsKvE4Aod/xvQF56eUY93atMqN\nnQ7YapEjx1f0zBhBbxsUmgroyP4g4zPB5RmbIC4pkk8boEMLIlaMm8ymCfw4Fl0d\nIMEKW8bf7PrSnay3rbTPrf+qJISfO85FPsvE3zy4FbJOnQVuvchYvcOdYdHVzehj\nqUVawj+jg2n+XyhBLpYwDI8Jy3akkkmqqd0As2gq0F55bbCi628SY/dCX4m2XI2A\n0PBbb8GnLn3HsVo+MH7FxboYHs/3rLb8Y0NG91PQw7NBKMM2iYK0JX5Hl8OJ/cz5\n6FL0/PS+NEbxeJofpVBugBrp2BN/l3QYahvnOiP6aQKBgQD/587+4MYnMWFepEYA\n948L+8eUBjmSvvhI6JJMht0UJATayzA0N14aD7B0E7HPhLYfWpOJJ/xYhHlpitGv\nOiader55Y/BKurrwSVkOUWS3j7OfP4WDiV/KfLXfhERBrz+HBXLOCcyB+sH1NYa1\nG43NKOEbkeCRGLI1hrXct++PRQKBgQDwIvbZSoFg24y6FKBsikTy5Lf8ABTs0+Ql\n4boODnuyyhTM+kPJesECBv9CdGAlFIXAG/unhMU/4QeaVXsHlKojramArMQcVKDp\nNI+HxUmntVvdhGs+0VK/cXi5QVLHyXcrcEe5DIiy6Om1kT87k9jheBUOV2tSnVjX\n3ee12uOTSwKBgFc7abAwZtuNVaexT7ucp8Jp/UpUJOQE/RW9UcGMZ2gqLw12HeRu\ny0EPABNRc1dN4dcmRQyH+Nkjr09u5rNYmzkrUiqHCq4uoPKvzg+3ZyG7dnteZ+DC\nv0iC4mxi5fGOD5WzIcNiS7gzBlLUACtUTS4WNUX0oBxV0sm0NeIbQSoRAoGBAKIm\nKeLtwVECzxKzbOP9tbMBqA58i6SjK5I8yqJFO1etxr/mWbGJtxxEV0arSGShZ/Mh\nshsatwp8S+L1x36F7yDqWeNuRXoP1xvBhw2ZtTOObbq1eKlRNPvahjcpmdkX++UU\nCwo0IXYVegJFUppLKg6NREKL2wdNAjm5OIX+iN7jAoGBAK69Dbw9a7rQl82JEvr8\nuYotpaMjl/ZeWTO9jBtKr85zHuxWIZC3F7tgABSaetGqqNMZWiCPSQd0qyqKZiTh\nIkRysb1yK7FG0oryJ2RqttuSVRxjz9zSoMuBgmfWoBjaqdkku+KgIKYZs00sQ8XD\nfBDc+IUS5Jc7Af/wguYW6bkO\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-ucxts@petmourning.iam.gserviceaccount.com",
+  "client_id": "111840050209799410723",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ucxts%40petmourning.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

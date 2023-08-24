@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from firebase_admin import initialize_app, credentials
+from google.auth import load_credentials_from_file
+from google.oauth2.service_account import Credentials
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project like this: BASE_DIßR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -37,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'petmourning'
+    'petmourning',
+    'fcm-django'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +133,38 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+# For FCM
+class CustomFirebaseCredentials(credentials.ApplicationDefault):
+    def __init__(self, account_file_path: str):
+        super().__init__()
+        self._account_file_path = account_file_path
+
+    def _load_credential(self):
+        if not self._g_credential:
+            self._g_credential, self._project_id = load_credentials_from_file(self._account_file_path,
+                                                                              scopes=credentials._scopes)
+
+
+
+cred = credentials.Certificate("path/to/serviceAccountKey.json")
+FIREBASE_APP = initialize_app(cred)
+
+
+FCM_DJANGO_SETTINGS = {
+     # an instance of firebase_admin.App to be used as default for all fcm-django requests
+     # default: None (the default Firebase app)
+    "DEFAULT_FIREBASE_APP": FIREBASE_APP,
+     # default: _('FCM Django')
+    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+     # true if you want to have only one active device per registered user at a time
+     # default: False
+    "ONE_DEVICE_PER_USER": True,
+     # devices to which notifications cannot be sent,
+     # are deleted upon receiving error response from FCM
+     # default: False
+    "DELETE_INACTIVE_DEVICES": False,
+}

@@ -5,8 +5,17 @@ name = "pypi"
 
 [packages]
 django = "*"
+wheel = "*"
+mysqlclient = "*"
+bcrypt = "*"
+jwt = "*"
+pyfcm = "*"
+fcm-django = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = "3.10"
+
+[pipenv]
+allow_prereleases = true
