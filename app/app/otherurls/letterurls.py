@@ -7,6 +7,6 @@ from petmourning.views.letterview import *
 urlpatterns = [
     path('<str:id>', handleLetter, name = 'handleLetter'),
     path('', findLetters, name = 'findLetters'),
-    path('/cnt', countLetters, name = 'countLetters'),
-    path('/community', sendLetterToCommunity, name = 'sendLetterToCommunity'),
+    path('cnt', countLetters, name = 'countLetters'),
+    path('community', sendLetterToCommunity, name = 'sendLetterToCommunity'),
 ]

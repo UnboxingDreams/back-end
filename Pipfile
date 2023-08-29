@@ -9,9 +9,9 @@ wheel = "*"
 mysqlclient = "*"
 bcrypt = "*"
 jwt = "*"
-pyfcm = "*"
-fcm-django = "*"
 django-crontab = "*"
+fcm-django = "*"
+whitenoise = "*"
 
 [dev-packages]
 

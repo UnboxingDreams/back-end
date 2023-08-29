@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'petmourning',
-    'fcm-django',
-    'django-crontab'
+
 ]
 
 MIDDLEWARE = [
@@ -54,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'petmourning'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -139,19 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # For FCM
-class CustomFirebaseCredentials(credentials.ApplicationDefault):
-    def __init__(self, account_file_path: str):
-        super().__init__()
-        self._account_file_path = account_file_path
 
-    def _load_credential(self):
-        if not self._g_credential:
-            self._g_credential, self._project_id = load_credentials_from_file(self._account_file_path,
-                                                                              scopes=credentials._scopes)
-
-
-
-cred = credentials.Certificate("path/to/serviceAccountKey.json")
+cred = credentials.Certificate("petmourningFCM.json")
 FIREBASE_APP = initialize_app(cred)
 
 
