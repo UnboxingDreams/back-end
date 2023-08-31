@@ -19,7 +19,4 @@ def sendTodayLetter():
         
         sendNoti(token, "편지가 배송되었습니다.", questionId + question)
 
-
-
         
-    

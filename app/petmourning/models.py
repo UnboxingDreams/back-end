@@ -87,7 +87,7 @@ class Post(models.Model):
     updatedAt = models.DateTimeField()
 
 class MailBox(models.Model):
-    id = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=True)
+    id = models.ForeignKey(Post, on_delete=models.CASCADE, primary_key=True)
     emotion = models.CharField(max_length=10, choices=[(emotion.name, emotion.value) for emotion in Emotion])
     content = models.TextField()
     contentImgUrl = models.URLField(blank=True, null=True)
