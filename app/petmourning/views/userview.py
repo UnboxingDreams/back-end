@@ -4,10 +4,9 @@ from django.http import HttpResponse, JsonResponse
 import json
 import bcrypt
 import jwt
-
 from app.settings import SECRET_KEY
-from ..models import User, AnimalSpecies, Death
-from ..exception import CustomException
+from petmourning.models import User, AnimalSpecies, Death
+from petmourning.exception import CustomException
 
 
 def sendApply(request):

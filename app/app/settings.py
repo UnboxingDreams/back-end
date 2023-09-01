@@ -15,9 +15,20 @@ from firebase_admin import initialize_app, credentials
 from google.auth import load_credentials_from_file
 from google.oauth2.service_account import Credentials
 import os
+from environ import Env
+
 
 # Build paths inside the project like this: BASE_DIßR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+env = Env(DEBUG=(bool, True))
+env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
+
+SECRET_KEY = env('SECRET_KEY')
+JWT_ALGO = env("JWT_ALGO")
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'petmourning',
+    'app'
 
 ]
 
@@ -54,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    "petmourning.views.authorization.JsonWebTokenMiddleWare",
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -74,7 +87,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'app.wsgi.application'
+
 
 
 # Database
@@ -91,7 +104,6 @@ DATABASES = {
         #'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-SECRET_KEY = 'django-insecure-)rg7ge4=*0k0gc4gke(n3e*jv3h0m2y0tz8c9^$0!(bz76a_oh'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -134,7 +146,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+WSGI_APPLICATION = 'app.wsgi.application'
 
 
 # For FCM
