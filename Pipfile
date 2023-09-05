@@ -12,6 +12,8 @@ jwt = "*"
 django-crontab = "*"
 fcm-django = "*"
 whitenoise = "*"
+pyjwt = "*"
+django-environ = "*"
 
 [dev-packages]
 

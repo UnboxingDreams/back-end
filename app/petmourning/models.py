@@ -43,6 +43,7 @@ class LetterTemplate(models.Model):
 class User(models.Model):
     id = models.AutoField(primary_key = True)
     userId = models.CharField(max_length=30)# username, password
+    password = models.CharField(max_length=50)
     userName = models.CharField(max_length=10)
     alarm = models.BooleanField(default=True)
     description = models.CharField(max_length=30)

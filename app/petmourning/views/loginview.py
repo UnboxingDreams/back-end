@@ -1,12 +1,77 @@
-# from django.shortcuts import render
-# from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
 
-# import json
-# import bcrypt
-# import jwt
+import json
+import base64
+import bcrypt
+import jwt
+import requests
+import datetime
+import os
 
-# from app.settings import SECRET_KEY
-# from .models import User
+from app.settings import SECRET_KEY, JWT_ALGO
+from ..models import User
+
+
+
+
+# redirect_uri=http://13.125.35.24:8080/login/oauth2/code/kakao
+class KakaoSignInView(APIView):
+    permission_classes = [*]
+
+    REDIRECT_URI =  os.getenv("REDIRECT_URI")
+
+    def generate_token(payload, type):
+        if type == "access":
+            exp = datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+        elif type == "refresh":
+            exp = datetime.datetime.utcnow() + datetime.timedelta(weeks=2)
+        else:
+            raise Exception("Invalid tokenType")
+
+    def kakaologin(self, request):
+        # TODO 카카오에 code 전송
+        
+        # TODO
+        try:
+            access_token = request.data["access_token"]
+            access_info = requests.get(
+                "https://kapi.kako.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"}   
+            ).json()
+
+            # id에 대한 생각, password
+
+            password = base64.b64decode(access_info["kakao-account"]["nickname"]).decode('ascii')
+            
+
+            if User.objects.filter(userId=id).exists():
+                user = User.objects.get(userId = id)
+                if user.password == password:
+                    raise Exception()
+            
+            
+            # TODO refresh_token
+            # TODO access_token
+
+            access_token = jwt.encode(pa)
+            
+            return JsonResponse(
+                {
+                    "message" : "로그인 되었습니다!",
+                    "access_token" : access_token,
+                    "refresh_token" : refresh_token
+                },
+                status_code = 200
+            )
+        except Exception():
+            return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status_code = 404) 
+
+
+
+
+
+
+
 
 
 # # Create your views here.
