@@ -8,8 +8,8 @@ import bcrypt
 import jwt
 
 from app.settings import SECRET_KEY
-from ..models import User, Question, Answer, Emotion, Category, Post, MailBox
-from ..exception import CustomException
+from petmourning.models import User, Question, Answer, Emotion, Category, Post, MailBox
+from petmourning.exception import CustomException
 
 
 def sendLetterToCommunity(request):

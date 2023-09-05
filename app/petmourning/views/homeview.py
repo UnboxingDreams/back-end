@@ -6,8 +6,8 @@ import bcrypt
 import jwt
 
 from app.settings import SECRET_KEY
-from ..models import Answer, User
-from ..exception import CustomException
+from petmourning.models import Answer, User
+from petmourning.exception import CustomException
 
 
 def findHomeDisplay(request):
