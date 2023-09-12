@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 
 import json
@@ -8,13 +8,15 @@ import jwt
 from app.settings import SECRET_KEY
 from petmourning.models import Answer, User
 from petmourning.exception import CustomException
+from petmourning.views.authorization import get_userId, get_userName
 
 
 def findHomeDisplay(request):
     try:
         if request.method == 'GET':
-            # TODO token에서 userId를 가져와야 함
-            userId = "testName"
+            userId = get_userId(request)
+            if User.objects.get(userId = userId).animalImgUrl == None:
+                return redirect("강아지 고르는 화면으로 넘어감")
 
             letterCnt = Answer.objects.filter(userId = userId).count()
             animalImgUrl = User.objects.get(userId = userId).animalImgUrl

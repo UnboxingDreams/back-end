@@ -13,6 +13,12 @@ from app.settings import SECRET_KEY, JWT_ALGO
 def encode_jwt(data):
     return jwt.encode(data, SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8")
 
+def get_userId(request):
+    return jwt.encode(request.headers.get("ACCESS_Authorization", None), SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8").get("userName", None)
+
+def get_userName(request):
+    return jwt.encode(request.headers.get("ACCESS_Authorization", None), SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8").get("userId", None)
+
 # jwt로 디코딩 하는 함수
 def decode_jwt(access_token):
     return jwt.decode(

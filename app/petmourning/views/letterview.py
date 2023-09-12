@@ -10,12 +10,12 @@ import jwt
 from app.settings import SECRET_KEY
 from petmourning.models import User, Question, Answer, Emotion, Category, Post, MailBox
 from petmourning.exception import CustomException
+from petmourning.views.authorization import get_userId, get_userName
 
 
 def sendLetterToCommunity(request):
     try:
-        # TODO 헤더에서 id로 변환 필요
-        userId = "testUser"
+        userId = get_userId(request)
         if request.method == 'POST':
             data = json.load(request.body)
             user = User.objects.get(id = userId)
@@ -50,8 +50,7 @@ def sendLetterToCommunity(request):
 
 def countLetters(request):
     try:
-        # TODO 헤더에서 id로 변환 필요
-        userId = "testUser"
+        userId = get_userId(request)
         if request.method == 'GET':
 
             letterCnt = Answer.objects.filter(userId = userId).count()
@@ -69,9 +68,8 @@ def countLetters(request):
 
 def findLetters(request):
     try:
-        # TODO 헤더에서 id로 변환 필요
-        userId = "testUser"
-        if request.method == 'GET':
+        userId = get_userId(request)
+        if request.method == 'GET' and request.GET.get('date'):
             inputDate = request.GET.get('date')
             parsedDate = timezone.datetime.strptime(inputDate, "%Y-%m-%d").date()
             
@@ -102,8 +100,7 @@ def findLetters(request):
 
 def handleLetter(request, id):
     try:
-        # TODO 헤더에서 id로 변환 필요
-        userId = "testUser"
+        userId = get_userId(request)
         if request.method == 'GET':
             question = Question.objects.get(id = id)
 

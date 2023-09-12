@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 
 import json
@@ -6,18 +6,18 @@ import bcrypt
 import jwt
 from app.settings import SECRET_KEY
 from petmourning.models import User, AnimalSpecies, Death
+from petmourning.views.authorization import get_userId, get_userName
 from petmourning.exception import CustomException
 
 
 def sendApply(request):
     try:
         if request.method == 'PUT':
-            # TODO token에서 userId를 가져와야 함
-            userId = "testName"
+            userId = get_userId(request)
 
             data = json.loads(request.body)
 
-            user = User.objects.get(user)
+            user = User.objects.get(userId = userId)
             animalImg = AnimalSpecies.objects.get(
                  color = data.get('imgColor'),
                  name = data.get('imgName')
@@ -34,7 +34,7 @@ def sendApply(request):
                 death = Death[data.get('death').upper()].value, 
             )
 
-            return JsonResponse({'message' : '데이터 업데이트가 완료되었습니다.'})
+            return redirect("홈화면")
         else:
             raise CustomException("옳바르지 않은 접근 입니다.", status_code=405)
     except CustomException as e:

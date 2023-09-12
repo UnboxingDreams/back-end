@@ -17,15 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from petmourning import views
+from petmourning.views.loginview import kakaologin
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/user', include('app.otherurls.userurls')),
-    path('api/home', include('app.otherurls.homeurls')),
-    path('api/letter', include('app.otherurls.letterurls')),
+    path('api/user/', include('app.otherurls.userurls')),
+    path('api/home/', include('app.otherurls.homeurls')),
+    path('api/letter/', include('app.otherurls.letterurls')),
     # path('/api/user', views.signUp),
-    # path('login/', views.signIn)
+    path('api/login/', kakaologin)
 ]
 

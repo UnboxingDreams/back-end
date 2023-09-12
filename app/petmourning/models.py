@@ -42,8 +42,8 @@ class LetterTemplate(models.Model):
 
 class User(models.Model):
     id = models.AutoField(primary_key = True)
-    userId = models.CharField(max_length=30)# username, password
-    password = models.CharField(max_length=50)
+    userId = models.CharField(max_length=30, null=False)# username, password
+    password = models.CharField(max_length=50, null=False)
     userName = models.CharField(max_length=10)
     alarm = models.BooleanField(default=True)
     description = models.CharField(max_length=30)
@@ -88,7 +88,7 @@ class Post(models.Model):
     updatedAt = models.DateTimeField()
 
 class MailBox(models.Model):
-    id = models.ForeignKey(Post, on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(Post, on_delete=models.CASCADE, primary_key=True)
     emotion = models.CharField(max_length=10, choices=[(emotion.name, emotion.value) for emotion in Emotion])
     content = models.TextField()
     contentImgUrl = models.URLField(blank=True, null=True)

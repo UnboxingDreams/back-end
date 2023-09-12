@@ -8,63 +8,97 @@ import jwt
 import requests
 import datetime
 import os
+import requests
 
 from app.settings import SECRET_KEY, JWT_ALGO
 from ..models import User
 
 
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+
+def generate_token(type, id, name):
+    if type == "access":
+        exp = datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+    elif type == "refresh":
+        exp = datetime.datetime.utcnow() + datetime.timedelta(weeks=2)
+    else:
+        raise Exception("Invalid tokenType")
+    payload = {
+        'userId': id,
+        'userName' : name,
+        'exp' : exp
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGO)
 
 
-# redirect_uri=http://13.125.35.24:8080/login/oauth2/code/kakao
-class KakaoSignInView(APIView):
-    permission_classes = [*]
+def kakaologin(request):
+    try:
+        code = request.POST.get("code", None)
 
-    REDIRECT_URI =  os.getenv("REDIRECT_URI")
+        # Request Token
+        headers = {
+            "Content_Type" : "application/x-www-form-urlencoded"
+        }
 
-    def generate_token(payload, type):
-        if type == "access":
-            exp = datetime.datetime.utcnow() + datetime.timedelta(hours=2)
-        elif type == "refresh":
-            exp = datetime.datetime.utcnow() + datetime.timedelta(weeks=2)
+        body = {
+            "grant_type" : "authorization_code",
+            "cliend_id" : os.getenv("REST_API_KEY"),
+            "redirect_uri" : os.getenv("REDIRECT_URI"),
+            "code" : code
+        }
+
+        response = requests.post("https://kauth.kakao.com/oauth/token", headers=headers, data=body)
+        if response.status_code == 200:
+            token_info = response.json()
         else:
-            raise Exception("Invalid tokenType")
+            JsonResponse({'message' : '카카오 코드가 유효하지 않습니다.'}, status_code = 404) 
 
-    def kakaologin(self, request):
-        # TODO 카카오에 code 전송
+
+        # Request Info
+        access_token = token_info.data["access_token"]
         
-        # TODO
-        try:
-            access_token = request.data["access_token"]
-            access_info = requests.get(
-                "https://kapi.kako.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"}   
-            ).json()
+        headers = {
+            "Authorization" : f"Bearer {access_token}",
+            "Content-type" : "application/x-www-form-urlencoded" }
+        
+        access_info = requests.get(
+            "https://kapi.kako.com/v2/user/me", headers=headers
+        )
 
-            # id에 대한 생각, password
+        if access_info.status_code == 200:
+            user_info = response.json()
+        else:
+            JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status_code = 404) 
 
-            password = base64.b64decode(access_info["kakao-account"]["nickname"]).decode('ascii')
-            
 
-            if User.objects.filter(userId=id).exists():
-                user = User.objects.get(userId = id)
-                if user.password == password:
-                    raise Exception()
-            
-            
-            # TODO refresh_token
-            # TODO access_token
-
-            access_token = jwt.encode(pa)
-            
-            return JsonResponse(
-                {
-                    "message" : "로그인 되었습니다!",
-                    "access_token" : access_token,
-                    "refresh_token" : refresh_token
-                },
-                status_code = 200
+        id = user_info["id"]
+        password = base64.b64decode(access_info["kakao_account"]["profile"]["nickname"]).decode('ascii')
+        
+        # login And save
+        if User.objects.filter(userId=id).exists():
+            user = User.objects.get(userId = id)
+            if user.password == password:
+                raise Exception()
+        else:
+            user = User.objects.create(
+                userId = id,
+                password = password,
+                userName = access_info["kakao_account"]["profile"]["nickname"]
             )
-        except Exception():
-            return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status_code = 404) 
+        
+        # generate token
+        access_token = self.generate_token(user.userId, user.userName, "access")
+        refresh_token = self.generate_token(user.userId, user.userName, "refresh")
+        return JsonResponse(
+            {
+                "message" : "로그인 되었습니다!",
+                "access_token" : access_token,
+                "refresh_token" : refresh_token
+            },
+            status_code = 200
+        )
+    except Exception():
+        return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status_code = 404) 
 
 
 

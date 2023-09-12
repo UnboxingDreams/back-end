@@ -8,5 +8,5 @@ urlpatterns = [
     path('<str:id>', handleLetter, name = 'handleLetter'),
     path('', findLetters, name = 'findLetters'),
     path('cnt', countLetters, name = 'countLetters'),
-    path('community', sendLetterToCommunity, name = 'sendLetterToCommunity'),
+    path('community', sendLetterToCommunity, name = 'sendLetterToCommunity')
 ]
