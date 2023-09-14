@@ -15,8 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from petmourning.views.loginview import kakaologin, takeFCMToken
+from petmourning.views.testview import testview
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/user/', include('app.otherurls.userurls')),
+    path('api/home/', include('app.otherurls.homeurls')),
+    path('api/letter/', include('app.otherurls.letterurls')),
+    # path('/api/user', views.signUp),
+    path('api/login/', kakaologin),
+    path('api/fcm/token/', takeFCMToken),
+    path('api/test/', testview)
 ]
+

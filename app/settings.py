@@ -11,20 +11,42 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from firebase_admin import initialize_app, credentials
+from google.auth import load_credentials_from_file
+from google.oauth2.service_account import Credentials
+import os
+import redis
+from environ import Env
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+# Build paths inside the project like this: BASE_DIßR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
+env = Env(DEBUG=False)
+env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
+
+SECRET_KEY = env('SECRET_KEY')
+JWT_ALGO = env("JWT_ALGO")
+REDIS_ENDPOINT = os.environ.get("REDIS_ENDPOINT")
+REDIRECT_URI = env("REDIRECT_URI")
+REST_API_KEY = env("REST_API_KEY")
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_NAME = env("AWS_STORAGE_NAME")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -36,6 +58,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'petmourning',
+    'app',
+
 ]
 
 MIDDLEWARE = [
@@ -46,7 +71,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'petmourning'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "petmourning.views.authorization.JsonWebTokenMiddleWare",
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -67,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'app.wsgi.application'
+
 
 
 # Database
@@ -75,10 +101,28 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME' : env("DB_NAME"),
+        'USER' : env("DB_USER"),
+        'PASSWORD' : env("DB_PASS"),
+        'HOST' : env("DB_HOST"),
+        'PORT' : '3306',
     }
 }
+
+REDIS_ENDPOINT = "redis://127.0.0.1:6379"
+REDIS = redis.StrictRedis.from_url(REDIS_ENDPOINT)
+
+CACHES = {
+	"default": {
+    	"BACKEND" : "django_redis.cache.RedisCache",
+        "LOCATION" : "redis://127.0.0.1:6379",
+        "OPTIONS": {
+        	"CLIENT_CLASS" : "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 
 
 # Password validation
@@ -121,3 +165,32 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+WSGI_APPLICATION = 'app.wsgi.application'
+
+
+# For FCM
+
+cred = credentials.Certificate("petmourningFCM.json")
+FIREBASE_APP = initialize_app(cred)
+
+
+FCM_DJANGO_SETTINGS = {
+     # an instance of firebase_admin.App to be used as default for all fcm-django requests
+     # default: None (the default Firebase app)
+    "DEFAULT_FIREBASE_APP": FIREBASE_APP,
+     # default: _('FCM Django')
+    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+     # true if you want to have only one active device per registered user at a time
+     # default: False
+    "ONE_DEVICE_PER_USER": True,
+     # devices to which notifications cannot be sent,
+     # are deleted upon receiving error response from FCM
+     # default: False
+    "DELETE_INACTIVE_DEVICES": False,
+}
+
+# Crontab
+CRONJOBS = [
+    ("30 21 * * *", "app.cron.sendTodayLetter")
+]
