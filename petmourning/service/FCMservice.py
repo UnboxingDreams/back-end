@@ -18,11 +18,16 @@ def sendData(token, letterId, content):
     return response
 
 
-def sendNoti(token, title, content):
-    noti = messaging.Notification(title=title, body=content)
+def sendNoti(token, title, questionId, question):
+    noti = messaging.Notification(title=title, body="새로운 편지를 확인해보세요!")
 
     message = messaging.Message(
         notification = noti,
+        data= {
+            "type" : "newLetter",
+            "qeustionId" : questionId,
+            "question" : question
+        },
         token=token
     )
 

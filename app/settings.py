@@ -15,21 +15,25 @@ from firebase_admin import initialize_app, credentials
 from google.auth import load_credentials_from_file
 from google.oauth2.service_account import Credentials
 import os
+import redis
 from environ import Env
 
 
 # Build paths inside the project like this: BASE_DIßR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
-env = Env(DEBUG=(bool, True))
+env = Env(DEBUG=False)
 env.read_env(
     env_file=os.path.join(BASE_DIR, '.env')
 )
 
 SECRET_KEY = env('SECRET_KEY')
 JWT_ALGO = env("JWT_ALGO")
-
+REDIS_ENDPOINT = os.environ.get("REDIS_ENDPOINT")
+REDIRECT_URI = env("REDIRECT_URI")
+REST_API_KEY = env("REST_API_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -40,7 +44,7 @@ JWT_ALGO = env("JWT_ALGO")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -53,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'petmourning',
-    'app'
+    'app',
 
 ]
 
@@ -104,6 +108,21 @@ DATABASES = {
         #'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+REDIS_ENDPOINT = "redis://127.0.0.1:6379"
+REDIS = redis.StrictRedis.from_url(REDIS_ENDPOINT)
+
+CACHES = {
+	"default": {
+    	"BACKEND" : "django_redis.cache.RedisCache",
+        "LOCATION" : "redis://127.0.0.1:6379",
+        "OPTIONS": {
+        	"CLIENT_CLASS" : "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

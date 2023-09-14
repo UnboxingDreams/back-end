@@ -14,10 +14,10 @@ def encode_jwt(data):
     return jwt.encode(data, SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8")
 
 def get_userId(request):
-    return jwt.encode(request.headers.get("ACCESS_Authorization", None), SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8").get("userName", None)
+    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithm=JWT_ALGO).get("userName", None)
 
 def get_userName(request):
-    return jwt.encode(request.headers.get("ACCESS_Authorization", None), SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8").get("userId", None)
+    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithm=JWT_ALGO).get("userId", None)
 
 # jwt로 디코딩 하는 함수
 def decode_jwt(access_token):
@@ -34,12 +34,10 @@ class JsonWebTokenMiddleWare(object):
 
     def __call__(self, request):
         try:
-            # 지정되지 않은 부분 - 로그인 할 부분과 oauth와 연동하는 부분은 빼줘야 함
             if (
-                request.path != "/api/signup"
-                and request.path != "/api/login"
-                and "admin" not in request.path
-            ):
+                request.path != "/api/login/"
+                and request.path != "/api/test/"
+                and "admin" not in request.path):
                 headers = request.headers
                 access_token = headers.get("ACCESS_Authorization", None)
 

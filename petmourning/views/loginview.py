@@ -10,11 +10,26 @@ import datetime
 import os
 import requests
 
-from app.settings import SECRET_KEY, JWT_ALGO
+from app.settings import SECRET_KEY, JWT_ALGO, REDIS, REDIRECT_URI, REST_API_KEY
 from ..models import User
+from petmourning.views.authorization import get_userId
 
 
-REDIRECT_URI = os.getenv("REDIRECT_URI")
+
+
+def takeFCMToken(request):
+    if request.method == "POST":
+        userId = get_userId(request)
+        token = request.POST.get("firebasetoken", None)
+        request.header
+        REDIS.hset('Token' + userId, "firebaseToken", token)
+        return JsonResponse(
+            {
+                "message" : "전송이 완료되었습니다.",
+            },
+            status_code = 201
+        )
+
 
 def generate_token(type, id, name):
     if type == "access":
@@ -42,8 +57,8 @@ def kakaologin(request):
 
         body = {
             "grant_type" : "authorization_code",
-            "cliend_id" : os.getenv("REST_API_KEY"),
-            "redirect_uri" : os.getenv("REDIRECT_URI"),
+            "cliend_id" : REST_API_KEY,
+            "redirect_uri" : REDIRECT_URI,
             "code" : code
         }
 
@@ -87,8 +102,12 @@ def kakaologin(request):
             )
         
         # generate token
-        access_token = self.generate_token(user.userId, user.userName, "access")
-        refresh_token = self.generate_token(user.userId, user.userName, "refresh")
+        access_token = generate_token(user.userId, user.userName, "access")
+        refresh_token = generate_token(user.userId, user.userName, "refresh")
+
+        # redis에 보관
+        REDIS.hset("Token" + user.userId, "refreshToken", refresh_token)
+
         return JsonResponse(
             {
                 "message" : "로그인 되었습니다!",
