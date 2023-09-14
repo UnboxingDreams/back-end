@@ -34,7 +34,9 @@ JWT_ALGO = env("JWT_ALGO")
 REDIS_ENDPOINT = os.environ.get("REDIS_ENDPOINT")
 REDIRECT_URI = env("REDIRECT_URI")
 REST_API_KEY = env("REST_API_KEY")
-
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_NAME = env("AWS_STORAGE_NAME")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -44,7 +46,7 @@ REST_API_KEY = env("REST_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -100,12 +102,11 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME' : 'pet',
-        'USER' : 'root',
-        'PASSWORD' : 'choi0924',
-        'HOST' : 'localhost',
+        'NAME' : env("DB_NAME"),
+        'USER' : env("DB_USER"),
+        'PASSWORD' : env("DB_PASS"),
+        'HOST' : env("DB_HOST"),
         'PORT' : '3306',
-        #'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
