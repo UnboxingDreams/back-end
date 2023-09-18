@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 
 from dateutil import relativedelta
+from datetime import datetime
 import json
 import bcrypt
 import jwt
@@ -78,16 +79,19 @@ def findLetters(request):
             
             letterData = Answer.objects.filter(userId_id = userId, 
                                                createdAt__range=[start, end]).order_by('createdAt').select_related('questionId')
-            
-            data = [{
-                'questionId' : answer.questionId.id,
-                'question' : answer.questionId.content,
-                'answer' : answer.content,
-                'emotion' : answer.emotion,
-                'createdAt' : answer.createdAt,
-                'postOut' : answer.postOut
-            } for answer in list(letterData)]
+            data = [None] *  32
 
+            for answer in list(letterData):
+                dateData = {
+                    'questionId' : answer.questionId.id,
+                    'question' : answer.questionId.content,
+                    'answer' : answer.content,
+                    'emotion' : answer.emotion,
+                    'createdAt' : answer.createdAt,
+                    'postOut' : answer.postOut
+                }
+                data[datetime.strptime(answer.createdAt, "%Y-%m-%d %H:%M:%S").day] = dateData
+                
             return JsonResponse({'letters' : data })
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
