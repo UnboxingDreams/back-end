@@ -39,7 +39,7 @@ class JsonWebTokenMiddleWare(object):
                 and request.path != "/api/test/"
                 and "admin" not in request.path):
                 headers = request.headers
-                access_token = headers.get("ACCESS_Authorization", None)
+                access_token = headers.get("ACCESS_AUTHORIZATION", None)
 
                 if not access_token:
                     raise InvalidException()

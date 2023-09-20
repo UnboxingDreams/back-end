@@ -9,6 +9,7 @@ import requests
 import datetime
 import os
 import requests
+from time import sleep
 
 from app.settings import SECRET_KEY, JWT_ALGO, REDIS, REDIRECT_URI, REST_API_KEY
 from ..models import User
@@ -47,9 +48,10 @@ def generate_token(type, id, name):
 
 
 def kakaologin(request):
-    try:
-        code = request.POST.get("code", None)
-
+    # try:
+        sleep(2)
+        code = request.GET.get("code", None)
+        print(code)
         # Request Token
         headers = {
             "Content_Type" : "application/x-www-form-urlencoded"
@@ -57,12 +59,14 @@ def kakaologin(request):
 
         body = {
             "grant_type" : "authorization_code",
-            "cliend_id" : REST_API_KEY,
-            "redirect_uri" : REDIRECT_URI,
+            "client_id" : "bf1749d6efdefd082868a6b86a9ceb56",
+            "client_secret" : "b5iDy9QD7mnl5NielFrY8xe6IUeKVSE2",
+            "redirect_uri" : "http://localhost:8000/api/login/",
             "code" : code
         }
 
         response = requests.post("https://kauth.kakao.com/oauth/token", headers=headers, data=body)
+        print(response.json())
         if response.status_code == 200:
             token_info = response.json()
         else:
@@ -70,25 +74,31 @@ def kakaologin(request):
 
 
         # Request Info
-        access_token = token_info.data["access_token"]
+        access_token = token_info["access_token"]
         
         headers = {
             "Authorization" : f"Bearer {access_token}",
-            "Content-type" : "application/x-www-form-urlencoded" }
+        }
         
         access_info = requests.get(
-            "https://kapi.kako.com/v2/user/me", headers=headers
+            "https://kapi.kakao.com/v2/user/me", headers=headers
         )
 
         if access_info.status_code == 200:
-            user_info = response.json()
+            user_info = access_info.json()
         else:
             JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status_code = 404) 
-
-
+        print(123)
+        print(user_info)
         id = user_info["id"]
-        password = base64.b64decode(access_info["kakao_account"]["profile"]["nickname"]).decode('ascii')
-        
+        nickname= user_info["kakao_account"]["profile"]["nickname"]
+        print(nickname)
+        print(type(nickname))
+        password = base64.b64encode(nickname.encode('utf-8'))
+        print(password)
+        new_pass = base64.b64decode(password)
+        print(new_pass)
+        print(type(new_pass))
         # login And save
         if User.objects.filter(userId=id).exists():
             user = User.objects.get(userId = id)
@@ -98,15 +108,15 @@ def kakaologin(request):
             user = User.objects.create(
                 userId = id,
                 password = password,
-                userName = access_info["kakao_account"]["profile"]["nickname"]
+                userName = nickname
             )
         
         # generate token
-        access_token = generate_token(user.userId, user.userName, "access")
-        refresh_token = generate_token(user.userId, user.userName, "refresh")
+        access_token = generate_token("access", user.userId, user.userName)
+        refresh_token = generate_token("refresh", user.userId, user.userName)
 
         # redis에 보관
-        REDIS.hset("Token" + user.userId, "refreshToken", refresh_token)
+        # REDIS.hset("Token" + user.userId, "refreshToken", refresh_token)
 
         return JsonResponse(
             {
@@ -114,12 +124,11 @@ def kakaologin(request):
                 "access_token" : access_token,
                 "refresh_token" : refresh_token
             },
-            status_code = 200
+            status = 200
         )
-    except Exception():
-        return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status_code = 404) 
-
-
+    # except Exception():
+        
+    #     return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status_code = 404) 
 
 
 
