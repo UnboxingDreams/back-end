@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_IMAGE: chlrltjd5263/petmourning
+  DOCKER_IMAGE: chlrltjd5263
   VERSION: ${{ github.sha }}
   NAME: petmourning
   SERVER_NAME: djangoServer
@@ -45,7 +45,8 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
         docker-compose -f docker-compose.yml build
         docker images
-        docker push ${{ env.DOCKER_IMAGE }}:latest
+        docker push ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+        docker push ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
 
   
   deploy:
@@ -63,9 +64,11 @@ jobs:
         run: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
           sudo docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          sudo docker pull ${{ env.DOCKER_IMAGE }}:latest
-          sudo docker create -p 80:80 --name ${{ env.NAME }} ${{ env.DOCKER_IMAGE }}:latest
+          sudo docker pull ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+          sudo docker pull ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
+          sudo docker create -p 8000:8000 --name ${{ env.SERVER_NAME }} ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+          sudo docker create -p 80:80 --name proxyServer ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
           sudo docker cp .env ${{ env.SERVER_NAME }}:/code/
           sudo docker cp petmourningFCM.json ${{ env.SERVER_NAME }}:/code/
-          sudo docker start ${{ env.NAME }}
+          sudo docker start ${{ env.SERVER_NAME }} && sudo docker start proxyServer
     
