@@ -28,7 +28,7 @@ def takeFCMToken(request):
             {
                 "message" : "전송이 완료되었습니다.",
             },
-            status_code = 201
+            status = 201
         )
 
 
@@ -48,7 +48,7 @@ def generate_token(type, id, name):
 
 
 def kakaologin(request):
-    # try:
+    try:
         sleep(2)
         code = request.GET.get("code", None)
         print(code)
@@ -87,18 +87,14 @@ def kakaologin(request):
         if access_info.status_code == 200:
             user_info = access_info.json()
         else:
-            JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status_code = 404) 
-        print(123)
-        print(user_info)
+            JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status = 404) 
+        
         id = user_info["id"]
         nickname= user_info["kakao_account"]["profile"]["nickname"]
-        print(nickname)
-        print(type(nickname))
+        
         password = base64.b64encode(nickname.encode('utf-8'))
-        print(password)
+        
         new_pass = base64.b64decode(password)
-        print(new_pass)
-        print(type(new_pass))
         # login And save
         if User.objects.filter(userId=id).exists():
             user = User.objects.get(userId = id)
@@ -126,9 +122,9 @@ def kakaologin(request):
             },
             status = 200
         )
-    # except Exception():
+    except Exception():
         
-    #     return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status_code = 404) 
+        return JsonResponse({'message' : '로그인 할 수 없습니다.'}, status = 404) 
 
 
 
