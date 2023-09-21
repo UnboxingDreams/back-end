@@ -45,6 +45,8 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
         docker-compose -f docker-compose.yml build
         docker images
+        docker tag back-end_web:latest ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+        docker tag back-end_nginx:latest ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
         docker push ${{ env.DOCKER_IMAGE }}/back-end_web:latest
         docker push ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
 
