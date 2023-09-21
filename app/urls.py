@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/user/', include('app.otherurls.userurls')),
     path('api/home/', include('app.otherurls.homeurls')),
     path('api/letter/', include('app.otherurls.letterurls')),
+    path('api/profile', include('app.otherurls.profileurls')),
     # path('/api/user', views.signUp),
     path('api/login/', kakaologin),
     path('api/fcm/token/', takeFCMToken),

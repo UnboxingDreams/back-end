@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone 
 from enum import Enum
 
 # This is Enum class
@@ -53,12 +54,12 @@ class User(models.Model):
     animalName = models.CharField(max_length=10)
     animalSpecies = models.CharField(max_length=30)
     animalImgUrl = models.URLField(blank=True, null=True)
-    animalDeathDate = models.DateTimeField()
+    animalDeathDate = models.DateTimeField(default=timezone.now)
     death = models.CharField(max_length=10, choices=[(death.name, death.value) for death in Death])
-    animalAge = models.IntegerField()
-    backgroundId = models.ForeignKey(background, on_delete=models.CASCADE, default=0)
-    letterTemplateId = models.ForeignKey(LetterTemplate, on_delete=models.CASCADE, default=0)
-    AnimalSpeciesId = models.ForeignKey(AnimalSpecies, on_delete=models.CASCADE, default=0)
+    animalAge = models.IntegerField(null=True)
+    # backgroundId = models.ForeignKey(background, on_delete=models.CASCADE, default=0)
+    # letterTemplateId = models.ForeignKey(LetterTemplate, on_delete=models.CASCADE, default=0)
+    # AnimalSpeciesId = models.ForeignKey(AnimalSpecies, on_delete=models.CASCADE, default=0)
 
 class Question(models.Model):
     id = models.AutoField(primary_key= True)
