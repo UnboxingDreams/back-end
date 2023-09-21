@@ -65,7 +65,8 @@ jobs:
       - name: Docker run
         run: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
-          sudo docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
+          sudo docker stop ${{ env.SERVER_NAME }} && docker ${{ env.SERVER_NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+          sudo docker stop proxyServer && docker rm proxyServer && docker rmi ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
           sudo docker pull ${{ env.DOCKER_IMAGE }}/back-end_web:latest
           sudo docker pull ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
           sudo docker create -p 8000:8000 --name ${{ env.SERVER_NAME }} ${{ env.DOCKER_IMAGE }}/back-end_web:latest
