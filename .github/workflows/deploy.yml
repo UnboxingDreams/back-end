@@ -9,9 +9,11 @@ env:
   VERSION: ${{ github.sha }}
   NAME: petmourning
   SERVER_NAME: djangoServer
+
   
 permissions:
   contents: read
+
 
 jobs:
   build:
@@ -43,6 +45,7 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
         docker-compose -f docker-compose.yml build
         docker push ${{ env.DOCKER_IMAGE }}:latest
+
   
   deploy:
     needs: build
