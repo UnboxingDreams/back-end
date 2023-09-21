@@ -83,10 +83,10 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
       - name: Docker run
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
-          docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker pull ${{ env.DOCKER_IMAGE }}:latest
-          docker create -p 80:80 --name ${{ env.NAME }} ${{ env.DOCKER_IMAGE }}:latest
-          docker cp .env ${{ env.SERVER_NAME }}:/
-          docker start ${{ env.NAME }}
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
+          sudo docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
+          sudo docker pull ${{ env.DOCKER_IMAGE }}:latest
+          sudo docker create -p 80:80 --name ${{ env.NAME }} ${{ env.DOCKER_IMAGE }}:latest
+          sudo docker cp .env ${{ env.SERVER_NAME }}:/
+          sudo docker start ${{ env.NAME }}
     
