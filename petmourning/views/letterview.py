@@ -44,9 +44,9 @@ def sendLetterToCommunity(request):
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status_code=e.status_code)
+        return JsonResponse({'message' : e.message}, status=e.status_code)
     except Exception:
-        return JsonResponse({'message' : '편지함에 올릴 수 없습니다.'}, status_code = 404) 
+        return JsonResponse({'message' : '편지함에 올릴 수 없습니다.'}, status = 404) 
 
 
 def countLetters(request):
@@ -62,9 +62,9 @@ def countLetters(request):
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status_code=e.status_code)
+        return JsonResponse({'message' : e.message}, status=e.status_code)
     except Exception:
-        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status_code = 404) 
+        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404)
 
 
 def findLetters(request):
@@ -96,9 +96,9 @@ def findLetters(request):
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status_code=e.status_code)
+        return JsonResponse({'message' : e.message}, status=e.status_code)
     except Exception:
-        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status_code = 404) 
+        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404) 
 
 
 
@@ -148,6 +148,6 @@ def handleLetter(request, id):
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status_code=e.status_code)
+        return JsonResponse({'message' : e.message}, status=e.status_code)
     except Exception:
-        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status_code = 404) 
+        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404) 
