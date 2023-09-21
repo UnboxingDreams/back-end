@@ -67,10 +67,7 @@ jobs:
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
           sudo docker stop ${{ env.SERVER_NAME }} && docker rm ${{ env.SERVER_NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}/back-end_web:latest
           sudo docker stop proxyServer && docker rm proxyServer && docker rmi ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
-          sudo docker pull ${{ env.DOCKER_IMAGE }}/back-end_web:latest
-          sudo docker pull ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
-          sudo docker create -p 8000:8000 --name ${{ env.SERVER_NAME }} ${{ env.DOCKER_IMAGE }}/back-end_web:latest
-          sudo docker create -p 80:80 --name proxyServer ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
+          docker-compose -f ~/docker-compose.yml up --force-recreate
           sudo docker cp ~/.env ${{ env.SERVER_NAME }}:/code/
           sudo docker cp ~/petmourningFCM.json ${{ env.SERVER_NAME }}:/code/
           sudo docker start ${{ env.SERVER_NAME }} && sudo docker start proxyServer
