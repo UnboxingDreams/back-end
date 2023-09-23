@@ -11,7 +11,7 @@ import os
 import requests
 from time import sleep
 
-from app.settings import SECRET_KEY, JWT_ALGO, REDIS, REDIRECT_URI, REST_API_KEY
+from app.settings import SECRET_KEY, JWT_ALGO, REDIS, REDIRECT_URI, REST_SECRET_KEY
 from ..models import User
 from petmourning.views.authorization import get_userId
 
@@ -60,8 +60,8 @@ def kakaologin(request):
         body = {
             "grant_type" : "authorization_code",
             "client_id" : "bf1749d6efdefd082868a6b86a9ceb56",
-            "client_secret" : "b5iDy9QD7mnl5NielFrY8xe6IUeKVSE2",
-            "redirect_uri" : "http://localhost:8000/api/login/",
+            "client_secret" : REST_SECRET_KEY,
+            "redirect_uri" : REDIRECT_URI,
             "code" : code
         }
 
@@ -70,7 +70,7 @@ def kakaologin(request):
         if response.status_code == 200:
             token_info = response.json()
         else:
-            JsonResponse({'message' : '카카오 코드가 유효하지 않습니다.'}, status_code = 404) 
+            return JsonResponse({'message' : '카카오 코드가 유효하지 않습니다.'}, status_code = 404) 
 
 
         # Request Info
@@ -87,7 +87,7 @@ def kakaologin(request):
         if access_info.status_code == 200:
             user_info = access_info.json()
         else:
-            JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status = 404) 
+            return JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status = 404) 
         
         id = user_info["id"]
         nickname= user_info["kakao_account"]["profile"]["nickname"]

@@ -1,9 +1,8 @@
 version: '3'
 services:
   nginx:
-    build:
-      context: .
-      dockerfile: Nginx.Dockerfile
+    container_name: proxyServer
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
@@ -14,9 +13,7 @@ services:
       - web
   web:
     container_name: djangoServer
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: chlrltjd5263/back-end_web:latest
     volumes:
       - .:/code
     ports:
