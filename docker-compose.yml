@@ -13,7 +13,9 @@ services:
       - web
   web:
     container_name: djangoServer
-    image: chlrltjd5263/back-end_web:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - .:/code
     ports:
