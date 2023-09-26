@@ -33,6 +33,7 @@ SECRET_KEY = env('SECRET_KEY')
 JWT_ALGO = env("JWT_ALGO")
 REDIS_ENDPOINT = os.environ.get("REDIS_ENDPOINT")
 REDIRECT_URI = env("REDIRECT_URI")
+REST_SECRET_KEY = env("REST_SECRET_KEY")
 REST_API_KEY = env("REST_API_KEY")
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
@@ -60,7 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'petmourning',
     'app',
-
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "petmourning.views.authorization.JsonWebTokenMiddleWare",
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000' ,'http://localhost:3000']
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'app.urls'
 
