@@ -35,7 +35,7 @@ class JsonWebTokenMiddleWare(object):
     def __call__(self, request):
         try:
             # if (
-            #     request.path != "/api/login/"
+            #     request.path != "/api/login"
             #     and request.path != "/api/test/"
             #     and "admin" not in request.path):
             #     headers = request.headers
