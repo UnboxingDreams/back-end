@@ -34,24 +34,24 @@ class JsonWebTokenMiddleWare(object):
 
     def __call__(self, request):
         try:
-            if (
-                request.path != "/api/login/"
-                and request.path != "/api/test/"
-                and "admin" not in request.path):
-                headers = request.headers
-                access_token = headers.get("ACCESS_AUTHORIZATION", None)
+            # if (
+            #     request.path != "/api/login/"
+            #     and request.path != "/api/test/"
+            #     and "admin" not in request.path):
+            #     headers = request.headers
+            #     access_token = headers.get("ACCESS_AUTHORIZATION", None)
 
-                if not access_token:
-                    raise InvalidException()
+            #     if not access_token:
+            #         raise InvalidException()
 
-                payload = decode_jwt(access_token)
+            #     payload = decode_jwt(access_token)
 
-                userId = payload.get("userId", None)
+            #     userId = payload.get("userId", None)
 
-                if not userId:
-                    raise InvalidException()
+            #     if not userId:
+            #         raise InvalidException()
 
-                User.objects.get(userId=userId)
+            #     User.objects.get(userId=userId)
 
             response = self.get_response(request)
 

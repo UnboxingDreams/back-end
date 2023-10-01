@@ -5,7 +5,7 @@ import json
 import bcrypt
 import jwt
 
-from app.settings import SECRET_KEY
+from app.settings import SECRET_KEY, FRONT_URL
 from petmourning.models import Answer, User
 from petmourning.exception import CustomException
 from petmourning.views.authorization import get_userId, get_userName
@@ -16,13 +16,11 @@ def findHomeDisplay(request):
         if request.method == 'GET':
             userId = get_userId(request)
             if User.objects.get(userId = userId).animalImgUrl == None:
-                return redirect("강아지 고르는 화면으로 넘어감")
+                return redirect(FRONT_URL + "/login/SelectDog")
 
-            letterCnt = Answer.objects.filter(userId = userId).count()
             animalImgUrl = User.objects.get(userId = userId).animalImgUrl
 
             data = {
-                "letterCnt" : letterCnt,
                 "animalImgUrl" : animalImgUrl
             }
 
