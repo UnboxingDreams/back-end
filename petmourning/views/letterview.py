@@ -8,7 +8,7 @@ import json
 import bcrypt
 import jwt
 
-from app.settings import SECRET_KEY
+from app.settings import SECRET_KEY, FRONT_URL
 from petmourning.models import User, Question, Answer, Emotion, Category, Post, MailBox
 from petmourning.exception import CustomException
 from petmourning.views.authorization import get_userId, get_userName
@@ -106,11 +106,19 @@ def handleLetter(request, id):
     try:
         userId = get_userId(request)
         if request.method == 'GET':
-            question = Question.objects.get(id = id)
+            callBy = User.objects.get(userId=userId)
+            question = Question.objects.get(id = id).content
+            pattern = "%s"
+
+            if pattern in question:
+                formatted_question = question % callBy
+            else:
+                formatted_question = question
+
 
             data = {
                 'letterId' : id,
-                'content' : question.content
+                'content' : formatted_question
             }
 
             return JsonResponse(data)
