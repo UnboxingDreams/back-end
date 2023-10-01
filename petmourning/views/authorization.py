@@ -14,10 +14,10 @@ def encode_jwt(data):
     return jwt.encode(data, SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8")
 
 def get_userId(request):
-    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithm=JWT_ALGO).get("userName", None)
+    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithms=JWT_ALGO).get("userName", None)
 
 def get_userName(request):
-    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithm=JWT_ALGO).get("userId", None)
+    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithms=JWT_ALGO).get("userId", None)
 
 # jwt로 디코딩 하는 함수
 def decode_jwt(access_token):
