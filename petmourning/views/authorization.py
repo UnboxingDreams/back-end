@@ -11,13 +11,18 @@ from app.settings import SECRET_KEY, JWT_ALGO
 
 # jwt로 인코딩하는 함수
 def encode_jwt(data):
-    return jwt.encode(data, SECRET_KEY, algorithm=JWT_ALGO).decode("utf-8")
+    return jwt.encode(data, SECRET_KEY, algorithms=JWT_ALGO).decode("utf-8")
 
 def get_userId(request):
-    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithms=JWT_ALGO).get("userName", None)
+    userId = jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithms=JWT_ALGO)
+    userId = userId.get("userId")
+    print(userId)
+    return userId
 
 def get_userName(request):
-    return jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithms=JWT_ALGO).get("userId", None)
+    userName = jwt.decode(request.headers.get("ACCESS_AUTHORIZATION", None), SECRET_KEY, algorithms=JWT_ALGO)
+    userName = userName.get("userName", None)
+    return userName
 
 # jwt로 디코딩 하는 함수
 def decode_jwt(access_token):

@@ -53,7 +53,10 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
+APPEND_SLASH = False
+
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +65,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'petmourning',
     'app',
-    'corsheaders',
     'app.otherurls',
 ]
 
@@ -71,18 +73,21 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     "petmourning.views.authorization.JsonWebTokenMiddleWare",
-    
-]
 
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000' ,'http://localhost:3000']
-CORS_ALLOW_CREDENTIALS = True
+]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000']
+CORS_ALLOW_HEADERS = ["*"]
+#CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
+
+#CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
 
 ROOT_URLCONF = 'app.urls'
 

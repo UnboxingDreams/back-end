@@ -1,5 +1,10 @@
 version: '3'
 services:
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
   nginx:
     container_name: proxyServer
     image: nginx:latest
@@ -20,3 +25,5 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
