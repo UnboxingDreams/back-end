@@ -53,9 +53,9 @@ class User(models.Model):
     callBy = models.CharField(max_length=10)
     animalName = models.CharField(max_length=10)
     animalSpecies = models.CharField(max_length=30)
-    animalImgUrl = models.URLField(blank=True, null=True)
-    animalDeathDate = models.DateTimeField(default=timezone.now)
-    death = models.CharField(max_length=10, choices=[(death.name, death.value) for death in Death])
+    animalImgUrl = models.URLField(max_length=150)
+    animalDeathDate = models.DateField(default=timezone.now)
+    death = models.CharField(max_length=10)
     animalAge = models.IntegerField(null=True)
     # backgroundId = models.ForeignKey(background, on_delete=models.CASCADE, default=0)
     # letterTemplateId = models.ForeignKey(LetterTemplate, on_delete=models.CASCADE, default=0)
@@ -72,7 +72,7 @@ class Answer(models.Model):
     content = models.TextField()
     contentImgUrl = models.URLField(blank=True, null=True)
     postOut = models.BooleanField(default=False)
-    emotion = models.CharField(max_length=10, choices=[(emotion.name, emotion.value) for emotion in Emotion])
+    emotion = models.CharField(max_length=10)
     createdAt = models.DateTimeField()
 
     class Meta:

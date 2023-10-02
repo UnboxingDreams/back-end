@@ -16,7 +16,7 @@ def findHomeDisplay(request):
         if request.method == 'GET':
             userId = get_userId(request)
             if User.objects.get(userId = userId).animalImgUrl == None:
-                return redirect(FRONT_URL + "/login/SelectDog")
+                return JsonResponse({'message' : e.message}, status=405)
 
             animalImgUrl = User.objects.get(userId = userId).animalImgUrl
 
@@ -24,10 +24,10 @@ def findHomeDisplay(request):
                 "animalImgUrl" : animalImgUrl
             }
 
-            return JsonResponse(data)
+            return JsonResponse(data, status = 200)
         else:
             raise CustomException("옳바르지 않은 접근 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status=e.status_code)
+        return JsonResponse({'message' : e.message}, status=405)
     except Exception:
         return JsonResponse({'message' : '데이터 베이스의 오류입니다.'}, status = 404)

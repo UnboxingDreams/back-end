@@ -27,15 +27,15 @@ from petmourning.views.profileview import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/user/', sendApply, name = 'sendApply'),
-    path('api/home/',  findHomeDisplay, name = 'findHomeDisplay'),
+    path('api/user', sendApply, name = 'sendApply'),
+    path('api/home',  findHomeDisplay, name = 'findHomeDisplay'),
     path('', findProfiles, name = 'findProfiles'),
     # path('/api/user', views.signUp),
     path('api/login', kakaologin),
-    path('api/fcm/token/', takeFCMToken),
+    path('api/fcm/token', takeFCMToken),
     path('api/test/', testview),
     path('api/letter/<str:id>', handleLetter, name = 'handleLetter'),
-    path('api/letter/', findLetters, name = 'findLetters'),
+    path('api/letter', findLetters, name = 'findLetters'),
     path('api/letter/cnt', countLetters, name = 'countLetters'),
     path('api/letter/community', sendLetterToCommunity, name = 'sendLetterToCommunity')
 ]
