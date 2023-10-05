@@ -1,5 +1,10 @@
 version: '3'
 services:
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
   nginx:
     container_name: proxyServer
     image: nginx:latest
@@ -13,8 +18,12 @@ services:
       - web
   web:
     container_name: djangoServer
-    image: chlrltjd5263/back-end_web:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - .:/code
     ports:
       - "8000:8000"
+    depends_on:
+      - redis

@@ -25,8 +25,8 @@ def sendNoti(token, title, questionId, question):
         notification = noti,
         data= {
             "type" : "newLetter",
-            "qeustionId" : questionId,
-            "question" : question
+            "taskNumber" : str(questionId),
+            "content" : str(question)
         },
         token=token
     )

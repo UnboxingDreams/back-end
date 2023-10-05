@@ -60,6 +60,7 @@ gunicorn = "*"
 django-redis = "*"
 redis = "*"
 pyjwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

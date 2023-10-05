@@ -19,17 +19,24 @@ from django.urls import path, include
 
 from petmourning.views.loginview import kakaologin, takeFCMToken
 from petmourning.views.testview import testview
+from petmourning.views.homeview import *
+from petmourning.views.letterview import *
+from petmourning.views.userview import *
+from petmourning.views.profileview import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/user/', include('app.otherurls.userurls')),
-    path('api/home/', include('app.otherurls.homeurls')),
-    path('api/letter/', include('app.otherurls.letterurls')),
-    path('api/profile', include('app.otherurls.profileurls')),
+    path('api/user', sendApply, name = 'sendApply'),
+    path('api/home',  findHomeDisplay, name = 'findHomeDisplay'),
+    path('', findProfiles, name = 'findProfiles'),
     # path('/api/user', views.signUp),
-    path('api/login/', kakaologin),
-    path('api/fcm/token/', takeFCMToken),
-    path('api/test/', testview)
+    path('api/login', kakaologin),
+    path('api/fcm/token', takeFCMToken),
+    path('api/test/', testview),
+    path('api/letter/<str:id>', handleLetter, name = 'handleLetter'),
+    path('api/letter', findLetters, name = 'findLetters'),
+    path('api/letter/cnt', countLetters, name = 'countLetters'),
+    path('api/letter/community', sendLetterToCommunity, name = 'sendLetterToCommunity')
 ]
 

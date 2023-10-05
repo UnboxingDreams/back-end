@@ -22,7 +22,6 @@ def takeFCMToken(request):
     if request.method == "POST":
         userId = get_userId(request)
         token = request.POST.get("firebasetoken", None)
-        request.header
         REDIS.hset('Token' + userId, "firebaseToken", token)
         return JsonResponse(
             {
@@ -70,7 +69,7 @@ def kakaologin(request):
         if response.status_code == 200:
             token_info = response.json()
         else:
-            return JsonResponse({'message' : '카카오 코드가 유효하지 않습니다.'}, status_code = 404) 
+            return JsonResponse({'message' : '카카오 코드가 유효하지 않습니다.'}, status = 404) 
 
 
         # Request Info
