@@ -22,7 +22,6 @@ def takeFCMToken(request):
     if request.method == "POST":
         userId = get_userId(request)
         token = request.POST.get("firebasetoken", None)
-        request.header
         REDIS.hset('Token' + userId, "firebaseToken", token)
         return JsonResponse(
             {
