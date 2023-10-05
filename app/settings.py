@@ -70,11 +70,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -130,7 +130,7 @@ REDIS = redis.StrictRedis.from_url(REDIS_ENDPOINT)
 CACHES = {
 	"default": {
     	"BACKEND" : "django_redis.cache.RedisCache",
-        "LOCATION" : "redis://127.0.0.1:6379",
+        "LOCATION" : "redis://redis_service:6379/1",
         "OPTIONS": {
         	"CLIENT_CLASS" : "django_redis.client.DefaultClient",
         }
