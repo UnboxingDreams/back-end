@@ -14,7 +14,7 @@ from time import sleep
 from app.settings import SECRET_KEY, JWT_ALGO, REDIS, REDIRECT_URI, REST_SECRET_KEY
 from ..models import User
 from petmourning.views.authorization import get_userId
-
+from django.core.cache import cache
 
 
 
@@ -22,7 +22,7 @@ def takeFCMToken(request):
     if request.method == "POST":
         userId = get_userId(request)
         token = request.POST.get("firebasetoken", None)
-        REDIS.hset('Token' + userId, "firebaseToken", token)
+        cache.set("Token" + userId, token)
         return JsonResponse(
             {
                 "message" : "전송이 완료되었습니다.",

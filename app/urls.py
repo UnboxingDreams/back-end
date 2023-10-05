@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/login', kakaologin),
     path('api/fcm/token', takeFCMToken),
     path('api/test/', testview),
-    path('api/letter/<str:id>', handleLetter, name = 'handleLetter'),
+    path('api/letter/<int:id>', handleLetter, name = 'handleLetter'),
     path('api/letter', findLetters, name = 'findLetters'),
     path('api/letter/cnt', countLetters, name = 'countLetters'),
     path('api/letter/community', sendLetterToCommunity, name = 'sendLetterToCommunity')
