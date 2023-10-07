@@ -4,6 +4,9 @@ class CustomException(Exception):
         self.status = status_code
         super().__init__(message)
 
+    def getStatus(self):
+        return self.status
+
 class ExpiredException(Exception):
     def __init__(self, status_code=403):
         self.message = "this token is Expired. You should Login Again."
