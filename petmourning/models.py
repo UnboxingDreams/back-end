@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone 
+from django.utils import timezone
 from enum import Enum
 
 # This is Enum class
@@ -24,7 +24,7 @@ class AnimalSpecies(models.Model):
     name = models.CharField(max_length=10)
     color = models.CharField(max_length=20)
     speciesImgUrl = models.URLField(blank=True, null=True)
-    
+
 
 class background(models.Model):
     id = models.AutoField(primary_key = True)
@@ -128,4 +128,3 @@ class Recomment(models.Model):
     userTagId = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recomments_by_tag')
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
-

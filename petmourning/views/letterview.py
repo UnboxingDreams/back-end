@@ -21,7 +21,7 @@ def sendLetterToCommunity(request):
             data = json.load(request.body)
             user = User.objects.get(id = userId)
             answer = Answer.objects.get(userId = userId, questionId = data.get('questionId'))
-            
+
             if answer.postOut:
                 raise CustomException("이미 커뮤니티에 존재하는 편지입니다.", status_code=400)
 
@@ -36,7 +36,7 @@ def sendLetterToCommunity(request):
                 contentImgUrl = answer.contentImgUrl,
                 emotion = Emotion[answer.emotion.upper()].value
             )
-            
+
             answer.postOut = True
             answer.save()
 
@@ -46,7 +46,7 @@ def sendLetterToCommunity(request):
     except CustomException as e:
         return JsonResponse({'message' : e.message}, status=e.status_code)
     except Exception:
-        return JsonResponse({'message' : '편지함에 올릴 수 없습니다.'}, status = 404) 
+        return JsonResponse({'message' : '편지함에 올릴 수 없습니다.'}, status = 404)
 
 
 def countLetters(request):
@@ -54,7 +54,7 @@ def countLetters(request):
         userId = get_userId(request)
         if request.method == 'GET':
 
-            letterCnt = Answer.objects.filter(userId = userId).count()
+            letterCnt = Answer.objects.filter(userId__userId = userId).count()
 
             data = {'letterCnt' : letterCnt}
 
@@ -62,7 +62,7 @@ def countLetters(request):
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status=e.status_code)
+        return JsonResponse({'message' : e.message}, status=e.getStatus())
     except Exception:
         return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404)
 
@@ -73,11 +73,13 @@ def findLetters(request):
         if request.method == 'GET' and request.GET.get('date'):
             inputDate = request.GET.get('date')
             parsedDate = timezone.datetime.strptime(inputDate, "%Y-%m-%d").date()
-            
+
             start = parsedDate.replace(day = 1)
             end = parsedDate + relativedelta.relativedelta(months=1) - timezone.timedelta(days=1)
-            
-            letterData = Answer.objects.filter(userId_id = userId, 
+
+            user = User.objects.get(userId = userId)
+
+            letterData = Answer.objects.filter(userId_id = user.id,
                                                createdAt__range=[start, end]).order_by('createdAt').select_related('questionId')
             data = [None] *  32
 
@@ -90,15 +92,15 @@ def findLetters(request):
                     'createdAt' : answer.createdAt,
                     'postOut' : answer.postOut
                 }
-                data[datetime.strptime(answer.createdAt, "%Y-%m-%d %H:%M:%S").day] = dateData
-                
+                data[int(answer.createdAt.day)] = dateData
+
             return JsonResponse({'letters' : data })
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
-        return JsonResponse({'message' : e.message}, status=e.status_code)
+        return JsonResponse({'message' : e.message}, status=e.getStatus())
     except Exception:
-        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404) 
+        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404)
 
 
 
@@ -106,8 +108,8 @@ def handleLetter(request, id):
     try:
         userId = get_userId(request)
         if request.method == 'GET':
-            callBy = User.objects.get(userId=userId)
-            question = Question.objects.get(id = id).content
+            callBy = User.objects.get(userId=userId).callBy
+            question = Question.objects.get(taskNumber=id).content
             pattern = "%s"
 
             if pattern in question:
@@ -124,10 +126,11 @@ def handleLetter(request, id):
             return JsonResponse(data)
 
         elif request.method == 'POST':
-            user = User.objects.get(id = userId)
-            question = Question.objects.get(id = id)
-
+            user = User.objects.get(userId = userId)
+            question = Question.objects.get(taskNumber = id)
+            print(question)
             data = json.loads(request.body)
+            print(data)
 
             answer = Answer.objects.create(
                 questionId = question,
@@ -135,7 +138,8 @@ def handleLetter(request, id):
                 content = data.get('content'),
                 contentImgUrl = data.get('contentImgUrl'),
                 postOut = data.get('postOut'),
-                emotion = Emotion[data.get('emotion').upper()].value
+                emotion = data.get('emotion'),
+                createdAt = datetime.now()
             )
 
             if data.get('postOut'):
@@ -150,12 +154,14 @@ def handleLetter(request, id):
                     contentImgUrl = data.get('contentImgUrl'),
                     emotion = Emotion[data.get('emotion').upper()].value
                 )
-            
-            return JsonResponse({'postOut' : data.get('postOut')})
-        
+
+            return JsonResponse({'message': '편지가 전송되었습니다.', 'postOut' : data.get('postOut')})
+
         else:
             raise CustomException("옳바르지 않은 메소드 입니다.", status_code=405)
     except CustomException as e:
+
         return JsonResponse({'message' : e.message}, status=e.status_code)
     except Exception:
-        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404) 
+
+        return JsonResponse({'message' : '요청하신 데이터에 오류가 있습니다.'}, status = 404)

@@ -17,7 +17,5 @@ def sendTodayLetter():
         question = Question.objects.get(taskNumber=questionId)
 
         token = str(cache.get(userId))
-        
-        sendNoti(token, "편지가 배송되었습니다.", questionId , question.content)
 
-        
+        sendNoti(token, "편지가 배송되었습니다.", questionId , question.content)

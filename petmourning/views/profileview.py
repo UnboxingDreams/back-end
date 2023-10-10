@@ -13,12 +13,11 @@ def findProfiles(request):
             user = User.objects.get(userId = userId)
             if user == None:
                 raise CustomException("유저 데이터가 존재하지 않습니다.", status_code=403)
-            
-            animalPicture = json.loads(user.animalImgUrl)
+
 
             data = {
-                'nickName' : user.animalName,
-                'thumb' : animalPicture['thumb'],
+                'nickName' : user.userName,
+                'animalImgUrl' : user.animalImgUrl,
                 'alarm' : user.alarm
             }
 
