@@ -40,4 +40,3 @@ urlpatterns = [
     path('api/letter/community', sendLetterToCommunity, name = 'sendLetterToCommunity'),
     path('api/profile', findProfiles, name="findProfiles")
 ]
-
