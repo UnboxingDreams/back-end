@@ -38,5 +38,5 @@ urlpatterns = [
     path('api/letter', findLetters, name = 'findLetters'),
     path('api/letter/cnt', countLetters, name = 'countLetters'),
     path('api/letter/community', sendLetterToCommunity, name = 'sendLetterToCommunity'),
-    path('api/profile', findProfiles, name="findProfiles")
+    path('api/profile', findProfiles, name="findProfiles"),
 ]

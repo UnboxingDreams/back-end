@@ -167,7 +167,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -207,4 +207,5 @@ FCM_DJANGO_SETTINGS = {
 # Crontab
 CRONJOBS = [
     ("30 21 * * *", "app.cron.sendTodayLetter")
+    ("00 00 * * *", "app.cron.")
 ]
