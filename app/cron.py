@@ -3,6 +3,7 @@ from django.db.models.functions import Coalesce
 from ..petmourning.models import User, Question
 from petmourning.service.FCMservice import sendNoti
 from django.core.cache import cache
+from datetime import datetime
 
 def sendTodayLetter():
     usersWithMaxQuestionId = User.objects.annotate(questionId=Coalesce(Max('answer__questionId', filter=Q(answer__userId=F('pk'))), 0)).values('id', 'questionId')
@@ -17,7 +18,10 @@ def sendTodayLetter():
         question = Question.objects.get(taskNumber=questionId)
 
         token = str(cache.get(userId))
-        
+
         sendNoti(token, "편지가 배송되었습니다.", questionId , question.content)
 
-        
+
+def deleteUser():
+    current_time = datetime.now()
+    User.objects.filter(Q(expiration_time__isnull=True) | Q(expiration_time__lte=current_time)).delete()

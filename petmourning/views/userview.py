@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime
 from django.db import transaction
+from django.utils import timezone
+from datetime import timedelta
 
 import json
 import bcrypt
@@ -15,10 +17,8 @@ from petmourning.exception import CustomException
 @transaction.atomic
 def sendApply(request):
     try:
+        userId = get_userId(request)
         if request.method == 'PUT':
-            userId = get_userId(request)
-            print("userId")
-
             data = json.loads(request.body)
             print("data")
 
@@ -38,11 +38,16 @@ def sendApply(request):
 
             return JsonResponse({'message' : '정보가 등록되었습니다.'}, status = 201)
 
+        elif request.method == 'DELETE':
+            user = User.objects.get(userId=userId)
+            user.expirationTime = timezone.now() + timedelta(days=14)
+            user.save()
         else:
             raise CustomException("옳바르지 않은 접근 입니다.")
+        
     except CustomException as e:
         print(e)
-        return JsonResponse({'message' : e.message}, status=403)
+        return JsonResponse({'message' : e.message}, status=404)
     except Exception as e:
         print(e)
         return JsonResponse({'message' : '데이터 베이스의 오류입니다.'}, status = 405)

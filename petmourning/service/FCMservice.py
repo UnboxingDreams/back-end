@@ -12,7 +12,7 @@ def sendData(token, letterId, content):
         data=dataPayLoad,
         token=token
     )
-    
+
     response = messaging.send(message=message)
 
     return response
@@ -32,5 +32,3 @@ def sendNoti(token, title, questionId, question):
     )
 
     response = messaging.send(message=message)
-
-    return response

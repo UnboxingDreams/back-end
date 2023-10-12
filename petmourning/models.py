@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone 
+from django.utils import timezone
 from enum import Enum
 
 # This is Enum class
@@ -24,7 +24,7 @@ class AnimalSpecies(models.Model):
     name = models.CharField(max_length=10)
     color = models.CharField(max_length=20)
     speciesImgUrl = models.URLField(blank=True, null=True)
-    
+
 
 class background(models.Model):
     id = models.AutoField(primary_key = True)
@@ -42,7 +42,7 @@ class LetterTemplate(models.Model):
 
 
 class User(models.Model):
-    id = models.AutoField(primary_key = True)
+    id = models.AutoField(primary_key = True, on_delete = models.CASCADE)
     userId = models.CharField(max_length=30, null=False)# username, password
     password = models.CharField(max_length=50, null=False)
     userName = models.CharField(max_length=10)
@@ -57,9 +57,12 @@ class User(models.Model):
     animalDeathDate = models.DateField(default=timezone.now)
     death = models.CharField(max_length=10)
     animalAge = models.IntegerField(null=True)
+    expirationTime = models.DateTimeField(null=True, blank=True)
     # backgroundId = models.ForeignKey(background, on_delete=models.CASCADE, default=0)
     # letterTemplateId = models.ForeignKey(LetterTemplate, on_delete=models.CASCADE, default=0)
     # AnimalSpeciesId = models.ForeignKey(AnimalSpecies, on_delete=models.CASCADE, default=0)
+
+
 
 class Question(models.Model):
     id = models.AutoField(primary_key= True)
@@ -128,4 +131,3 @@ class Recomment(models.Model):
     userTagId = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recomments_by_tag')
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
-

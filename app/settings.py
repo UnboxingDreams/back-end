@@ -207,4 +207,5 @@ FCM_DJANGO_SETTINGS = {
 # Crontab
 CRONJOBS = [
     ("30 21 * * *", "app.cron.sendTodayLetter")
+    ("00 00 * * *", "app.cron.")
 ]
