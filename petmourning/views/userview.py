@@ -42,6 +42,8 @@ def sendApply(request):
             user = User.objects.get(userId=userId)
             user.expirationTime = timezone.now() + timedelta(days=14)
             user.save()
+            return JsonResponse({'message' : '14일 뒤에 삭제됩니다..'}, status = 201)
+
         else:
             raise CustomException("옳바르지 않은 접근 입니다.")
         

@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from petmourning.views.loginview import kakaologin, takeFCMToken
+from petmourning.views.loginview import kakaologin, takeFCMToken, googlelogin
 from petmourning.views.testview import testview
 from petmourning.views.homeview import *
 from petmourning.views.letterview import *
@@ -31,7 +31,8 @@ urlpatterns = [
     path('api/home',  findHomeDisplay, name = 'findHomeDisplay'),
     path('', findProfiles, name = 'findProfiles'),
     # path('/api/user', views.signUp),
-    path('api/login', kakaologin),
+    path('api/login/kakao', kakaologin),
+    path('api/login/google', googlelogin),
     path('api/fcm/token', takeFCMToken),
     path('api/test/', testview),
     path('api/letter/<int:id>', handleLetter, name = 'handleLetter'),
