@@ -54,7 +54,7 @@ def googlelogin(request):
             "Content_Type" : "application/x-www-form-urlencoded"
         }
 
-        body = "?grant_type=authorization_code&client_id=" + GOOGLE_CLIENT_ID + "&client_secret="+ GOOGLE_CLIENT_SECRET + "&redirect_uri=http://127.0.0.1:3000/google&code=" + code
+        body = "?grant_type=authorization_code&client_id=" + GOOGLE_CLIENT_ID + "&client_secret="+ GOOGLE_CLIENT_SECRET + "&redirect_uri="+REDIRECT_URI+"google&code=" + code
         print(body)
         response = requests.post("https://oauth2.googleapis.com/token" + body, headers=headers)
         print(response.json())
@@ -62,7 +62,7 @@ def googlelogin(request):
         if response.status_code == 200:
             token_info = response.json()
         else:
-            return JsonResponse({'message' : '카카오 코드가 유효하지 않습니다.'}, status = 400) 
+            return JsonResponse({'message' : '구글 코드가 유효하지 않습니다.'}, status = 400) 
         
         access_token = token_info["access_token"]
 
@@ -74,7 +74,7 @@ def googlelogin(request):
         if access_info.status_code == 200:
             user_info = access_info.json()
         else:
-            return JsonResponse({'message' : '카카오 토큰이 유효하지 않습니다.'}, status = 404) 
+            return JsonResponse({'message' : '구글 토큰이 유효하지 않습니다.'}, status = 404) 
         
         id = user_info["id"]
         nickname= user_info["email"]
