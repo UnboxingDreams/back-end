@@ -42,7 +42,7 @@ class LetterTemplate(models.Model):
 
 
 class User(models.Model):
-    id = models.AutoField(primary_key = True, on_delete = models.CASCADE)
+    id = models.AutoField(primary_key = True)
     userId = models.CharField(max_length=30, null=False)# username, password
     password = models.CharField(max_length=50, null=False)
     userName = models.CharField(max_length=10)
