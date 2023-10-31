@@ -6,6 +6,7 @@ from http import HTTPStatus
 from petmourning.models import User
 from petmourning.exception import InvalidException, ExpiredException
 from app.settings import SECRET_KEY, JWT_ALGO
+from django.contrib.auth.middleware import MiddlewareMixin
 
 
 
@@ -33,7 +34,7 @@ def decode_jwt(access_token):
     )
 
 
-class JsonWebTokenMiddleWare(object):
+class JsonWebTokenMiddleWare(MiddlewareMixin):
     def __init__(self, get_response):
         self.get_response = get_response
 
