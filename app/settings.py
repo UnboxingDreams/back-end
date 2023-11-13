@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'petmourning',
     'app',
     'app.otherurls',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,7 @@ DATABASES = {
 }
 
 REDIS_ENDPOINT = "redis://127.0.0.1:6379"
+
 REDIS = redis.StrictRedis.from_url(REDIS_ENDPOINT)
 
 CACHES = {
@@ -207,8 +209,9 @@ FCM_DJANGO_SETTINGS = {
     "DELETE_INACTIVE_DEVICES": False,
 }
 
-# Crontab
-CRONJOBS = [
-    ("30 21 * * *", "app.cron.sendTodayLetter"),
-    ("00 00 * * *", "app.cron.deleteUser")
-]
+
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
+
+SCHEDULER_DEFAULT = True
+
