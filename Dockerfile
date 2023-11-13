@@ -7,7 +7,7 @@ RUN ls
 RUN cd code
 RUN pip uninstall pipenv
 RUN python -m pip install --upgrade pip
-RUN pip install pipenv && pipenv install --dev --system --deploy
+RUN pip install pipenv && pipenv lock && pipenv install --dev --system --deploy
 # RUN pipenv shell
 # # COPY . /
 
