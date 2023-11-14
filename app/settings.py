@@ -41,7 +41,10 @@ AWS_STORAGE_NAME = env("AWS_STORAGE_NAME")
 FRONT_URL = env("FRONT_URL")
 GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = env("GOOGLE_CLIENT_SECRET")
-
+APPLE_CLIENT_ID = env("APPLE_CLIENT_ID")
+APPLE_KEY_ID = env("APPLE_KEY_ID")
+APPLE_ISS = env("APPLE_ISS")
+APPLE_SITE = env("APPLE_SITE")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

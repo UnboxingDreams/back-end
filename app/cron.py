@@ -13,8 +13,8 @@ from apscheduler.triggers.cron import CronTrigger
 
 def start():
     sched = BackgroundScheduler()
-    sched.add_job(sendTodayLetter, 'cron', second=10)
-    #sched.add_job(sendTodayLetter, 'cron', hour=9, minute=30)
+    #sched.add_job(sendTodayLetter, 'cron', second=10)
+    sched.add_job(sendTodayLetter, 'cron', hour=9, minute=30)
     sched.start()
 
 
