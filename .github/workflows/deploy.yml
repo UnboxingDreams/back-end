@@ -1,0 +1,74 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  DOCKER_IMAGE: chlrltjd5263
+  VERSION: ${{ github.sha }}
+  NAME: petmourning
+  SERVER_NAME: djangoServer
+
+  
+permissions:
+  contents: read
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup docker buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Cache docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ env.VERSION }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+    - name: Create .env file
+      run: |
+        echo "$SECRETS_CONTEXT" >> .env
+      env:
+        SECRETS_CONTEXT: ${{secrets.SECRETS_CONTEXT}}
+        
+    - name: Build Docker image
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
+        docker-compose -f docker-compose.yml build
+        docker images ls
+        docker tag back-end_web:latest ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+        # docker tag back-end_nginx:latest ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
+        docker push ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+        # docker push ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
+
+  
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [ self-hosted, label-petmourning ]
+    steps:
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+      - name: Docker run
+        run: |
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASS }}
+          sudo docker stop ${{ env.SERVER_NAME }} && docker rm ${{ env.SERVER_NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}/back-end_web:latest
+          sudo docker stop proxyServer && docker rm proxyServer && docker rmi ${{ env.DOCKER_IMAGE }}/back-end_nginx:latest
+          docker-compose up
+          sudo docker cp ~/.env ${{ env.SERVER_NAME }}:/code/
+          sudo docker cp ~/petmourningFCM.json ${{ env.SERVER_NAME }}:/code/
+          sudo docker start ${{ env.SERVER_NAME }} && sudo docker start proxyServer
+    
