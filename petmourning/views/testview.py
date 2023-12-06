@@ -12,7 +12,7 @@ def testview(request):
         "taskNumber": "1",
         "content" : "편지쓰기 테스트예용"
     }
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzMDM2ODk0OTI1IiwidXNlck5hbWUiOiIiLCJleHAiOjE2OTg3MzE0MzR9.Zj_don3IyFfR136uuZZiDIHPFKH3NFLodidi4KDEcYc"
+    token = "dASKYLtoTiOLgcD0MZqcyw:APA91bGr2TsOJfVNtGa53ZS_EiwTQLeHQOKPPfLi5IwcZ3ItaErYupzGFqnTzNMO1QrG3QXSLS-i2tTISvGpZeZhK4-4X8jChfIRoiwWCAuQIYr0ANb1BvEvqkk9faXeolo9crB6kz1F"
     message = messaging.Message(
         data=dataPayLoad,
         token=token
